@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -52,5 +51,29 @@ public class PostService {
                 randomPosts.add(category.getPosts().getFirst());
         }
         return new ResponseEntity<>(randomPosts, HttpStatus.OK);
+    }
+
+    public void likePost(ObjectId id){
+        Post post = postRepository.findById(id).orElse(null);
+        post.setLikes(post.getLikes()+1);
+        postRepository.save(post);
+    }
+
+    public void unlikePost(ObjectId id){
+        Post post = postRepository.findById(id).orElse(null);
+        post.setLikes(post.getLikes()-1);
+        postRepository.save(post);
+    }
+
+    public void dislikePost(ObjectId id){
+        Post post = postRepository.findById(id).orElse(null);
+        post.setDislikes(post.getDislikes()+1);
+        postRepository.save(post);
+    }
+
+    public void unDislikePost(ObjectId id){
+        Post post = postRepository.findById(id).orElse(null);
+        post.setDislikes(post.getDislikes()-1);
+        postRepository.save(post);
     }
 }
