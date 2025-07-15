@@ -1,5 +1,6 @@
 package com.research_blog.research_blog.service;
 
+import com.research_blog.research_blog.entity.Category;
 import com.research_blog.research_blog.entity.Post;
 import com.research_blog.research_blog.entity.User;
 import com.research_blog.research_blog.repository.PostRepository;
@@ -15,11 +16,14 @@ public class PostService {
     private PostRepository postRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CategoryService categoryService;
 
     public void createPost(Post post){
         Post savedPost = postRepository.save(post);
         User user = userService.findByUserName(post.getAuthor());
         user.getMyPosts().add(savedPost);
+        categoryService.addPostToCategory(post);
         userService.saveUser(user);
     }
 }
