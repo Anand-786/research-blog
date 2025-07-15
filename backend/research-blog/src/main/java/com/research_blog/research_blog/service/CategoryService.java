@@ -7,7 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CategoryService {
@@ -33,5 +33,26 @@ public class CategoryService {
 
     public List<Category> getAllCategories(){
         return categoryRepository.findAll();
+    }
+
+    public List<Post> searchByTags(String query, String categoryName){
+        List<Post> searchResults = new ArrayList<>();
+
+        String lowerCaseQuery=query.toLowerCase();
+        String[] tokenized=lowerCaseQuery.split(" ");
+        List<String> token_list= Arrays.asList(tokenized);
+        Set<String> token_set=new HashSet<>(token_list);
+
+        Category category=categoryRepository.findByCategory(categoryName);
+        for(Post post : category.getPosts()){
+            for(String tag: post.getTags()){
+                if(token_set.contains(tag.toLowerCase())){
+                    searchResults.add(post);
+                    break;
+                }
+            }
+        }
+        searchResults.sort((p1,p2) -> Integer.compare(p2.getLikes(),p1.getLikes()));
+        return searchResults;
     }
 }
