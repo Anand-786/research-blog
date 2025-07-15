@@ -6,10 +6,13 @@ import com.research_blog.research_blog.entity.User;
 import com.research_blog.research_blog.repository.PostRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,5 +43,14 @@ public class PostService {
         Post oldPost=postRepository.findById(id).orElse(null);
         categoryService.deletePostById(oldPost.getCategory(),id);
         postRepository.deleteById(id);
+    }
+
+    public ResponseEntity<?> getRandomPosts(){
+        List<Post> randomPosts = new ArrayList<>();
+        for(Category category : categoryService.getAllCategories()){
+            if(!category.getPosts().isEmpty())
+                randomPosts.add(category.getPosts().getFirst());
+        }
+        return new ResponseEntity<>(randomPosts, HttpStatus.OK);
     }
 }

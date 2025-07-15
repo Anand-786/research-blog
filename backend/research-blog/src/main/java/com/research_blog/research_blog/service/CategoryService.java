@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryService {
     @Autowired
@@ -27,5 +29,9 @@ public class CategoryService {
         Category category = categoryRepository.findByCategory(categoryName);
         category.getPosts().removeIf(x -> x.getId().equals(id));
         categoryRepository.save(category);
+    }
+
+    public List<Category> getAllCategories(){
+        return categoryRepository.findAll();
     }
 }

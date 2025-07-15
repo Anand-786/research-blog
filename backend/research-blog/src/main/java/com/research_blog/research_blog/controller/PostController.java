@@ -33,4 +33,9 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("random-logs")
+    public ResponseEntity<?> getRandomPosts(){
+        return postService.getRandomPosts();
+    }
+
 }
