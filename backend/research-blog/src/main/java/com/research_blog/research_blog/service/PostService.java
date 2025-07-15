@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class PostService {
     @Autowired
     private CategoryService categoryService;
 
+    @Transactional
     public void createPost(Post post){
         post.setDate(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
@@ -37,6 +39,7 @@ public class PostService {
         postRepository.save(newPost);
     }
 
+    @Transactional
     public void deletePost(String userName,ObjectId id){
         userService.deletePostById(userName,id);
         Post oldPost=postRepository.findById(id).orElse(null);

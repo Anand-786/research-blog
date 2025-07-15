@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,8 @@ public class UserService {
         return new ResponseEntity<>(user.getMyPosts(), HttpStatus.OK);
     }
 
-    public ResponseEntity<?> subscribeToCategory(String categoryName,String userName){
+    @Transactional
+    public ResponseEntity<?> subscribeToCategory(String categoryName, String userName){
         //Change this so, we get username from authenticated context
         User user = userRepository.findByUserName(userName);
         Category category = categoryService.findByCategory(categoryName);
@@ -42,6 +44,7 @@ public class UserService {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @Transactional
     public ResponseEntity<?> unsubscribeToCategory(String categoryName,String userName){
         //Change this so, we get username from authenticated context
         User user = userRepository.findByUserName(userName);
