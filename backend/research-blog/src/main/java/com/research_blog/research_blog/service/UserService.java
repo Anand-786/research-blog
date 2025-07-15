@@ -4,6 +4,7 @@ import com.research_blog.research_blog.entity.Category;
 import com.research_blog.research_blog.entity.Post;
 import com.research_blog.research_blog.entity.User;
 import com.research_blog.research_blog.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,5 +66,11 @@ public class UserService {
             allMySubPosts.addAll(category.getPosts());
         }
         return new ResponseEntity<>(allMySubPosts,HttpStatus.OK);
+    }
+
+    public void deletePostById(String userName, ObjectId id){
+        User user = userRepository.findByUserName(userName);
+        user.getMyPosts().removeIf(x -> x.getId().equals(id));
+        userRepository.save(user);
     }
 }

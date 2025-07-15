@@ -2,13 +2,11 @@ package com.research_blog.research_blog.controller;
 
 import com.research_blog.research_blog.entity.Post;
 import com.research_blog.research_blog.service.PostService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("logs/")
@@ -22,4 +20,17 @@ public class PostController {
         postService.createPost(post);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PostMapping("edit-log/{id}")
+    public ResponseEntity<?> editPost(@RequestBody Post newPost, @PathVariable ObjectId id){
+        postService.editPost(id,newPost);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("del-log/{userName}/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable ObjectId id,@PathVariable String userName){
+        postService.deletePost(userName,id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
