@@ -22,7 +22,7 @@ public class SpringSecurity {
         http.csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(
                 auth -> auth.
-                requestMatchers("/public/**").permitAll().
+                requestMatchers("/public/**","/ai-summary/**","/health-check").permitAll().
                 anyRequest().authenticated()).
                 httpBasic(Customizer.withDefaults()).
                 sessionManagement(session ->

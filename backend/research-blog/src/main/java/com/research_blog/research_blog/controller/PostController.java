@@ -7,6 +7,8 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -22,19 +24,26 @@ public class PostController {
 
     @PostMapping("create-log")
     public ResponseEntity<?> createPost(@RequestBody Post post){
-        //Set author name from authenticated context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        post.setAuthor(userName);
         postService.createPost(post);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("edit-log/{id}")
+    @PutMapping("edit-log/{id}")
     public ResponseEntity<?> editPost(@RequestBody Post newPost, @PathVariable ObjectId id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
+        newPost.setAuthor(userName);
         postService.editPost(id,newPost);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("del-log/{userName}/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable ObjectId id,@PathVariable String userName){
+    @DeleteMapping("del-log/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable ObjectId id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userName = authentication.getName();
         postService.deletePost(userName,id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
