@@ -39,14 +39,4 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("random-logs")
-    public ResponseEntity<?> getRandomPosts(){
-        return postService.getRandomPosts();
-    }
-
-    @PostMapping("search/{categoryName}")
-    public ResponseEntity<?> searchByTags(@RequestBody Map<String, String> body,@PathVariable String categoryName){
-        return new ResponseEntity<>(categoryService.searchByTags(body.get("text"),categoryName),HttpStatus.OK);
-    }
-
 }

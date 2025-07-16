@@ -19,13 +19,6 @@ public class UserController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("create-user")
-    public ResponseEntity<?> createUser(@RequestBody User user){
-        user.getRoles().add("user");
-        userService.saveUser(user);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @GetMapping("my-logs/{userName}")
     public ResponseEntity<?> getAllMyPosts(@PathVariable String userName){
         return new ResponseEntity<>(userService.getAllMyPosts(userName),HttpStatus.OK);
