@@ -1,5 +1,6 @@
 package com.research_blog.research_blog.utils;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,18 @@ public class JwtUtil {
 
     public SecretKey getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    }
+
+    private Claims extractAllClaims(String jwtToken){
+        return Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(jwtToken).getPayload();
+    }
+
+    public String extractUserName(String jwtToken){
+        return extractAllClaims(jwtToken).getSubject();
+    }
+
+    public boolean validateToken(String jwtToken){
+        return !(extractAllClaims(jwtToken).getExpiration().before(new Date()));
     }
 
 }
