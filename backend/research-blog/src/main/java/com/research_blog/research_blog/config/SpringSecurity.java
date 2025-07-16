@@ -23,12 +23,11 @@ public class SpringSecurity {
                 authorizeHttpRequests(
                 auth -> auth.
                 requestMatchers("/public/**","/ai-summary/**","/health-check").permitAll().
-                anyRequest().authenticated()).
-                httpBasic(Customizer.withDefaults()).
-                sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS)
-        );
+                        requestMatchers("/admin/**").hasRole("ADMIN").
+                        anyRequest().authenticated()).
+                        httpBasic(Customizer.withDefaults()).
+                        sessionManagement(session -> session.
+                                sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
