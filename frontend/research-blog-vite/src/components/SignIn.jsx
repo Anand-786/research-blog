@@ -1,0 +1,72 @@
+import { useState } from 'react';
+
+export default function SignIn() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isValidUser, setIsValidUser] = useState(false); // Static false for now
+  const [showError, setShowError] = useState(false);
+
+  const isValid = username.trim() !== '' && password.trim() !== '';
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    if (!isValid) return;
+    // This is static for now, you can plug in auth logic later
+    if (!isValidUser) {
+      setShowError(true);
+    } else {
+      setShowError(false);
+      // Proceed with navigation or auth success action
+    }
+  };
+
+  return (
+    <div className='flex justify-center items-center'>
+    <form onSubmit={handleSignIn} className="space-y-6 w-full max-w-md p-8 rounded-sm shadow-xl">
+        <p className='flex justify-center text-2xl font-semibold text-black'>Enter Details to Sign In</p>
+      <div>
+        <label className="block text-md font-semibold">Username *</label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="w-full border rounded-sm px-3 py-2 text-md"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block text-md font-semibold">Password *</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border rounded-sm px-3 py-2 text-md"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={!isValid}
+        className={`w-full py-2 rounded-sm text-white text-md ${
+          isValid ? 'bg-[#D90429] hover:bg-[#EF233C]' : 'bg-[#8D99AE] cursor-not-allowed'
+        }`}
+      >
+        Sign In
+      </button>
+
+      {showError && (
+        <p className="text-[#EF233C] text-md text-center">User not found.</p>
+      )}
+
+      <p className="text-md text-center">
+        Don't have an account?{' '}
+        <a href="/signup" className="text-blue-500 hover:underline">
+          Sign Up
+        </a>
+      </p>
+    </form>
+    </div>
+  );
+}

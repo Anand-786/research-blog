@@ -25,7 +25,7 @@ export default function SearchBar({ onSearch }) {
   };
 
   return (
-    <div className="flex items-center rounded-sm overflow-hidden w-full shadow-sm">
+    <div className="flex items-center rounded-sm overflow-hidden w-full shadow-md">
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}

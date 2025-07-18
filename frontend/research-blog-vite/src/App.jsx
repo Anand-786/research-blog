@@ -4,6 +4,9 @@ import Navbar from './components/Navbar'
 import LogCard from './components/LogCard'
 import SearchBar from './components/SearchBar'
 import CategoryManager from './components/CategoryManager'
+import LogForm from './components/LogForm'
+import SignIn from './components/SignIn'
+import SignUp from './components/Signup'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -20,6 +23,7 @@ function App() {
           
         <div className="flex w-full pt-4 px-52">
           <div className="w-3/4 pr-20 border-r border-gray-200">
+            {/*<LogForm onSubmit={(data) => console.log(data)} />*/}
             <LogCard />
           </div>
           <div className="w-1/4 pl-20">
