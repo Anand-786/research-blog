@@ -6,6 +6,8 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import Layout from './Layout.jsx'
 import SignIn from './components/SignIn.jsx'
 import SignUp from './components/Signup.jsx'
+import RandomLogs from './components/RandomLogs.jsx'
+import LogForm from './components/LogForm.jsx'
 
 const router = createBrowserRouter([{
   path: '/',
@@ -13,11 +15,31 @@ const router = createBrowserRouter([{
   children:[
     {
       path: "",
+      element: <RandomLogs />
+    },
+    {
+      path: "signup",
+      element: <SignUp />
+    },
+    {
+      path: "signin",
       element: <SignIn />
     },
     {
-      path: "/signup",
-      element: <SignUp />
+      path: "add-log",
+      element: <LogForm />
+    },
+    {
+      path: "search",
+      element: <RandomLogs />
+    },
+    {
+      path: "/random-logs",
+      element: <RandomLogs />
+    },
+    {
+      path: "/my-logs",
+      element: <RandomLogs />
     }
   ]
 }]);
