@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useOutletContext, useNavigate} from 'react-router-dom';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isValidUser, setIsValidUser] = useState(false); // Static false for now
   const [showError, setShowError] = useState(false);
+  const {setIsLoggedIn, setName} = useOutletContext();
 
   const isValid = username.trim() !== '' && password.trim() !== '';
 
@@ -42,8 +43,10 @@ export default function SignIn() {
       if(response.status === 201){
         const jwtToken = await response.text();
         localStorage.setItem('jwt',jwtToken);
-        console.log("Login Successful, token stored :",localStorage.getItem('jwt'));
+        setIsLoggedIn(true);
         setIsValidUser(true);
+        setName(username);
+        localStorage.setItem('name',username);
       }
       else{
         console.log("Login failed with status : ", response.status);

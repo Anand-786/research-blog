@@ -1,14 +1,17 @@
+import { LucideUserCircle, Settings, UserCircle, UserCircle2, UserCircle2Icon, UserCircleIcon } from 'lucide-react';
 import { use, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function UserIcon({firstLetter = "A"}) {
+export default function UserIcon({firstLetter = "A", setIsLoggedIn}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     console.log('Logged out!');
-    localStorage.setItem('jwt',"This is my initial jwt Token which is Invalid.");
+    localStorage.removeItem('jwt');
+    setIsLoggedIn(false);
     setMenuOpen(false);
+    navigate('/')
   };
 
   const handleMyLogs = () => {
@@ -23,7 +26,7 @@ export default function UserIcon({firstLetter = "A"}) {
         onClick={() => setMenuOpen(!menuOpen)}
         className="flex items-center justify-center w-10 h-10 rounded-full bg-[#D90429] text-white text-lg font-semibold hover:cursor-pointer hover:bg-[#EF233C]"
       >
-        {firstLetter}
+        <Settings className='w-5 h-5'/>
       </button>
 
       {menuOpen && (
