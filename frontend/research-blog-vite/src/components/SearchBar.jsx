@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const categories = [
-  'Computer Science - AI/ML',
-  'Computer Science - Theoretical',
-  'Computer Science - Systems',
-  'Electronics/Embedded',
+  'ComputerScience-AI-ML',
+  'ComputerScience-Theoretical',
+  'ComputerScience-Systems',
+  'Electronics',
   'Mechanical',
   'Civil',
   'Physics',

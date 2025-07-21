@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const allCategories = [
-  'Computer Science - AI/ML',
-  'Computer Science - Theoretical',
-  'Computer Science - Systems',
-  'Electronics/Embedded',
+  'ComputerScience-AI-ML',
+  'ComputerScience-Theoretical',
+  'ComputerScience-Systems',
+  'Electronics',
   'Mechanical',
   'Civil',
   'Physics',
@@ -13,12 +14,37 @@ const allCategories = [
   'Humanities',
 ];
 
-export default function CategoryManager() {
+export default function CategoryManager({isLoggedIn}) {
   const [subscribed, setSubscribed] = useState([]);
   const [unsubscribed, setUnsubscribed] = useState(allCategories);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const getsubs = async () =>{
+      const resp = await fetch(localStorage.getItem('spring-url')+'/user/subscribed-categories',{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
+
+      if(resp.status === 200){
+        const data = await resp.json();
+        console.log(data);
+        setSubscribed(data.body);
+        const notsubs = allCategories.filter((cat) => !data.body.includes(cat));
+        setUnsubscribed(notsubs);
+      }
+      else{
+        console.log("Error in loading subs :", resp.status);
+        setSubscribed([]);
+        setUnsubscribed(allCategories);
+      }
+    };
+    getsubs();
+  },[isLoggedIn]);
 
   const subscribe = async (category) => {
-    console.log(localStorage.getItem('jwt'));
     const response = await fetch(localStorage.getItem('spring-url')+`/user/subscribe/${category}`,{
       method: 'GET',
       headers: {
@@ -27,18 +53,33 @@ export default function CategoryManager() {
       },
     });
 
-    if(response.status === 200){
+    if(response.status === 201){
       setSubscribed([...subscribed, category]);
       setUnsubscribed(unsubscribed.filter((c) => c !== category));
     }
     else{
-      console.log("Error in subscribing.");
+      console.log("Error in subscribing.",response.status);
+      navigate('/signin');
     }
   };
 
-  const unsubscribe = (category) => {
-    setUnsubscribed([...unsubscribed, category]);
-    setSubscribed(subscribed.filter((c) => c !== category));
+  const unsubscribe = async (category) => {
+    const response = await fetch(localStorage.getItem('spring-url')+`/user/unsubscribe/${category}`,{
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    });
+
+    if(response.status === 200){
+      setUnsubscribed([...unsubscribed, category]);
+      setSubscribed(subscribed.filter((c) => c !== category));
+    }
+    else{
+      console.log("Error in unsubscribing.",response.status);
+      navigate('/signin');
+    }
   };
 
   return (
@@ -53,7 +94,7 @@ export default function CategoryManager() {
               <button
                 key={idx}
                 onClick={() => unsubscribe(cat)}
-                className="bg-[#d90429] text-white text-xs px-3 py-1 rounded-full hover:bg-[#ef233c] transition"
+                className="bg-[#d90429] text-white text-xs px-3 py-1 rounded-full hover:bg-[#ef233c] transition hover:cursor-pointer"
               >
                 {cat}
               </button>
@@ -72,7 +113,7 @@ export default function CategoryManager() {
               <button
                 key={idx}
                 onClick={() => subscribe(cat)}
-                className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition"
+                className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full hover:bg-gray-200 transition hover:cursor-pointer"
               >
                 {cat}
               </button>

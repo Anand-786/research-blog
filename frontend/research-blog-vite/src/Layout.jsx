@@ -32,7 +32,7 @@ function Layout() {
                 </div>
                 <div className="w-1/4 pl-20">
                 <p className="text-gray-500">
-                    <CategoryManager />
+                    <CategoryManager isLoggedIn={isLoggedIn} />
                 </p>
                 </div>
             </div>

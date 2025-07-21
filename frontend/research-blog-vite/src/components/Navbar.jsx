@@ -7,7 +7,7 @@ import SignInButton from './SignInButton';
 export default function Navbar({isLoggedIn , setIsLoggedIn, uname}) {
 
   return (
-    <nav className="w-full h-14 flex items-center justify-between px-8 shadow-md bg-[#edf2f4] fixed top-0 left-0">
+    <nav className="w-full h-14 flex items-center justify-between px-8 shadow-sm bg-[#edf2f4] fixed top-0 left-0">
       <div className="flex items-center space-x-2">
         <img src="/logo.png" alt="Logo" className="h-10 w-auto" />
          <NavLink to="/" style={{ color: '#2b2d42' ,

@@ -47,7 +47,6 @@ public class UserService {
 
     @Transactional
     public ResponseEntity<?> subscribeToCategory(String categoryName, String userName){
-        //Change this so, we get username from authenticated context
         User user = userRepository.findByUserName(userName);
         Category category = categoryService.findByCategory(categoryName);
         user.getSubscribedCategories().add(category);
