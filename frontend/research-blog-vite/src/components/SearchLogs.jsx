@@ -11,8 +11,6 @@ export default function SearchLogs() {
         try{
           const query = searchParams.get('query');
           const category = searchParams.get('category');
-          console.log(query);
-          console.log(category);
           const response = await fetch(localStorage.getItem('spring-url')+`/public/search/${category}`,{
             method: 'POST',
             headers: {

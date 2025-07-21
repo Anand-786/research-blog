@@ -24,6 +24,9 @@ export default function LogCard({
   const [disliked, setDisliked] = useState(false);
   const [likecount, setLikeCount] = useState(likes);
   const [dislikeCount, setDislikeCount] = useState(dislikes);
+  const [aisummary, setAisummary] = useState('');
+  const [showSummary, setShowSummary] = useState(false);
+  const [loadingSummary, setLoadingSummary] = useState(false);
   const navigate = useNavigate();
 
   const handleLike = async () => {
@@ -102,6 +105,33 @@ export default function LogCard({
     }
   };
 
+  const handleTagClick = async (tag) => {
+    navigate(`/search?query=${tag}&category=${category}`);
+  };
+
+  const handleAISummary = async () => {
+    setLoadingSummary(true);
+    const response = await fetch(localStorage.getItem('spring-url')+'/ai-summary/get',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text: mainbody,
+      }),
+    });
+
+    if(response.status === 200){
+      const data = await response.json();
+      setAisummary(data[0]?.summary_text || 'No summary available');
+      setShowSummary(true);
+      setLoadingSummary(false);
+    }
+    else{
+      console.log('error occoured :',response.status);
+    }
+  };
+
   return (
     <div className="w-full bg-gray-50 rounded-xs shadow-sm p-6 space-y-3 text-[#2b2d42]">
       <div className="flex justify-between items-start">
@@ -119,12 +149,13 @@ export default function LogCard({
 
       <div className="flex flex-wrap gap-2">
         {tags.map((tag, index) => (
-          <span
+          <button
+            onClick={() => handleTagClick(tag)}
             key={index}
-            className="bg-[#d90429] text-xs font-normal px-2 py-1 rounded-full text-white"
+            className="bg-[#d90429] text-xs font-normal px-2 py-1 rounded-full text-white hover:cursor-pointer hover:bg-[#EF233C]"
           >
             {tag}
-          </span>
+          </button>
         ))}
       </div>
 
@@ -133,7 +164,7 @@ export default function LogCard({
       </p>
 
       <div className="text-gray-800 text-sm space-y-2">
-        <p>{mainbody}</p>
+        <p>- {mainbody}</p>
         {imageUrl && (
           <img
             src={imageUrl}
@@ -144,8 +175,9 @@ export default function LogCard({
       </div>
 
       <div className="flex justify-between items-center pt-2">
-        <button className="px-2 py-1 bg-[#d90429] text-white text-md rounded-sm hover:bg-[#ef233c] flex items-center">
-          Get AI Summary <Brain className="h-4 w-4 mr-1 ml-1 mt-1" />
+        <button onClick={handleAISummary} 
+        className="px-3 py-1 bg-[#2B2D42] text-[#fff9ec] text-md rounded-full hover:bg-[#ef233c] flex items-center hover:cursor-pointer">
+          Summarize with AI <Brain className="h-4 w-4 mr-0 ml-1.5 mt-0.5" />
         </button>
         <button
           onClick={() => setShowReferences(!showReferences)}
@@ -154,6 +186,15 @@ export default function LogCard({
           {showReferences ? 'Hide References' : 'Show References'}
         </button>
       </div>
+
+      {loadingSummary && <p className="text-[#8d99ae] mt-2">Fetching summary...</p>}
+
+      {showSummary && (
+        <div className="mt-2 p-3 bg-gray-100 rounded-sm shadow-sm text-[#2B2D42]">
+          <p className="font-semibold mb-1">AI Summary (Powered by Facebook's Model):</p>
+          <p>{aisummary}</p>
+        </div>
+      )}
 
       {showReferences && (
         <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
@@ -175,16 +216,16 @@ export default function LogCard({
       <div className="flex items-center space-x-4 pt-2">
         <button
           onClick={handleLike}
-          className="flex items-center text-[#588157] hover:underline text-md"
+          className="flex items-center text-[#588157] hover:text-green-500 text-lg hover:cursor-pointer"
         >
-          <ThumbsUp className="h-4 w-4 mr-1" />
+          <ThumbsUp className="h-5 w-5 mr-1" />
           {likecount}
         </button>
         <button
           onClick={handleDisLike} 
-          className="flex items-center text-[#c1121f] hover:underline text-md"
+          className="flex items-center text-[#c1121f] hover:text-red-500 text-lg hover:cursor-pointer"
         >
-          <ThumbsDown className="h-4 w-4 mr-1" />
+          <ThumbsDown className="h-5 w-5 mr-1" />
           {dislikeCount}
         </button>
       </div>
