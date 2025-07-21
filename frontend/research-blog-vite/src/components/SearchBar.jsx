@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   'Computer Science - AI/ML',
@@ -14,14 +15,15 @@ const categories = [
   'Humanities',
 ];
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
   const [query, setQuery] = useState('');
+  const [searchLogs, setSearchLogs] = useState([]);
+  const navigate = useNavigate();
 
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch({ category: selectedCategory, query });
-    }
+  const handleSearch = (e) =>{
+    e.preventDefault();
+    navigate(`/search?query=${query}&category=${selectedCategory}`);
   };
 
   return (
@@ -48,7 +50,7 @@ export default function SearchBar({ onSearch }) {
 
       <button
         onClick={handleSearch}
-        className="flex items-center px-3 py-2 bg-[#d90429] text-white text-sm hover:bg-[#ef233c] transition"
+        className="flex items-center px-3 py-2 bg-[#d90429] text-white text-sm hover:bg-[#ef233c] transition hover:cursor-pointer"
       >
         <Search className="h-4 w-4 mr-1" />
         Search

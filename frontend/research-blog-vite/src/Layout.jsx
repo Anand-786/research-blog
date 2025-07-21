@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { use, useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import SearchBar from './components/SearchBar'
 import LogCard from './components/LogCard'
 import CategoryManager from './components/CategoryManager'
 import { Outlet } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Layout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,13 +23,12 @@ function Layout() {
                 <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} uname={name} />
             </div>
             <div className='pt-20 px-72 flex justify-center items-center'>
-                <SearchBar onSearch={(data) => console.log(data)} />
+                <SearchBar />
             </div>
                 
             <div className="flex w-full pt-4 px-52">
                 <div className="w-3/4 pr-20 border-r border-gray-200">
-                {/*<LogForm onSubmit={(data) => console.log(data)} />*/}
-                <Outlet context={{isLoggedIn, setIsLoggedIn, setName}} />
+                    <Outlet context={{isLoggedIn, setIsLoggedIn, setName}} />
                 </div>
                 <div className="w-1/4 pl-20">
                 <p className="text-gray-500">

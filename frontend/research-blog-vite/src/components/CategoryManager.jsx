@@ -17,9 +17,23 @@ export default function CategoryManager() {
   const [subscribed, setSubscribed] = useState([]);
   const [unsubscribed, setUnsubscribed] = useState(allCategories);
 
-  const subscribe = (category) => {
-    setSubscribed([...subscribed, category]);
-    setUnsubscribed(unsubscribed.filter((c) => c !== category));
+  const subscribe = async (category) => {
+    console.log(localStorage.getItem('jwt'));
+    const response = await fetch(localStorage.getItem('spring-url')+`/user/subscribe/${category}`,{
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      },
+    });
+
+    if(response.status === 200){
+      setSubscribed([...subscribed, category]);
+      setUnsubscribed(unsubscribed.filter((c) => c !== category));
+    }
+    else{
+      console.log("Error in subscribing.");
+    }
   };
 
   const unsubscribe = (category) => {
@@ -29,7 +43,6 @@ export default function CategoryManager() {
 
   return (
     <div className="space-y-4 text-[#2b2d42]">
-      {/* Subscribed Categories */}
       <div>
         <h3 className="text-md font-semibold mb-2">Subscribed Categories</h3>
         {subscribed.length === 0 ? (
@@ -49,7 +62,6 @@ export default function CategoryManager() {
         )}
       </div>
 
-      {/* Unsubscribed Categories */}
       <div>
         <h3 className="text-md font-semibold mb-2">Available Categories</h3>
         {unsubscribed.length === 0 ? (
