@@ -15,7 +15,7 @@ import java.util.Map;
 @Data
 public class Post {
     @Id
-    private ObjectId id;
+    private String id;
     private String author;
     @NonNull
     private String title;

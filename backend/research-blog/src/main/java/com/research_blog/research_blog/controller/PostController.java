@@ -33,7 +33,7 @@ public class PostController {
     }
 
     @PutMapping("edit-log/{id}")
-    public ResponseEntity<?> editPost(@RequestBody Post newPost, @PathVariable ObjectId id){
+    public ResponseEntity<?> editPost(@RequestBody Post newPost, @PathVariable String id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         newPost.setAuthor(userName);
@@ -42,7 +42,7 @@ public class PostController {
     }
 
     @DeleteMapping("del-log/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable ObjectId id){
+    public ResponseEntity<?> deletePost(@PathVariable String id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         postService.deletePost(userName,id);

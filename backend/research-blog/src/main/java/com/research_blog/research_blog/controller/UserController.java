@@ -58,25 +58,25 @@ public class UserController {
     }
 
     @GetMapping("like-log/{id}")
-    public ResponseEntity<?> likePost(@PathVariable ObjectId id){
+    public ResponseEntity<?> likePost(@PathVariable String id){
         postService.likePost(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("unlike-log/{id}")
-    public ResponseEntity<?> unLikePost(@PathVariable ObjectId id){
+    public ResponseEntity<?> unLikePost(@PathVariable String id){
         postService.unlikePost(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("dislike-log/{id}")
-    public ResponseEntity<?> dislikePost(@PathVariable ObjectId id){
+    public ResponseEntity<?> dislikePost(@PathVariable String id){
         postService.dislikePost(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("undislike-log/{id}")
-    public ResponseEntity<?> unDislikePost(@PathVariable ObjectId id){
+    public ResponseEntity<?> unDislikePost(@PathVariable String id){
         postService.unDislikePost(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

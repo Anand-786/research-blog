@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ThumbsUp, ThumbsDown , Brain} from 'lucide-react';
+import {useNavigate} from 'react-router-dom';
 
 export default function LogCard({
   id,
@@ -23,29 +24,81 @@ export default function LogCard({
   const [disliked, setDisliked] = useState(false);
   const [likecount, setLikeCount] = useState(likes);
   const [dislikeCount, setDislikeCount] = useState(dislikes);
+  const navigate = useNavigate();
 
   const handleLike = async () => {
-    if(liked === true)
-        return;
-    try{
-      const response = await fetch(localStorage.getItem('spring-url')+'/user/like-log/'+{id},
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
+    if(!liked){
+      const response = await fetch(localStorage.getItem('spring-url')+`/user/like-log/${id}`,{
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
 
-    if(response.status === 200){
-      console.log("Response is ok");
-      setLikeCount(likecount+1);
-      setLiked(true);
+      if(response.status === 200){
+        setLiked(!liked);
+        setLikeCount(likecount+1);
+      }
+      else{
+        console.log("Could not like log :", response.status);
+        navigate('/signin');
+      }
+    }else{
+      const response = await fetch(localStorage.getItem('spring-url')+`/user/unlike-log/${id}`,{
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
+
+      if(response.status === 200){
+        setLiked(!liked);
+        setLikeCount(likecount-1);
+      }
+      else{
+        console.log("Could not unlike log :", response.status);
+        navigate('/signin');
+      }
     }
-    else{
-      console.log("Error in liking post");
-    }
-    }catch(error){
-      console.log("Error :",error);
+  };
+
+  const handleDisLike = async () => {
+    if(!disliked){
+      const response = await fetch(localStorage.getItem('spring-url')+`/user/dislike-log/${id}`,{
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
+
+      if(response.status === 200){
+        setDisliked(!disliked);
+        setDislikeCount(dislikeCount+1);
+      }
+      else{
+        console.log("Could not dislike log :", response.status);
+        navigate('/signin');
+      }
+    }else{
+      const response = await fetch(localStorage.getItem('spring-url')+`/user/undislike-log/${id}`,{
+        method: 'GET',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
+
+      if(response.status === 200){
+        setDisliked(!disliked);
+        setDislikeCount(dislikeCount-1);
+      }
+      else{
+        console.log("Could not undislike log :", response.status);
+        navigate('/signin');
+      }
     }
   };
 
@@ -83,7 +136,7 @@ export default function LogCard({
         <p>{mainbody}</p>
         {imageUrl && (
           <img
-            src="/graph.png"
+            src={imageUrl}
             alt="Blog Visual"
             className="w-full h-auto rounded-sm"
           />
@@ -128,6 +181,7 @@ export default function LogCard({
           {likecount}
         </button>
         <button
+          onClick={handleDisLike} 
           className="flex items-center text-[#c1121f] hover:underline text-md"
         >
           <ThumbsDown className="h-4 w-4 mr-1" />

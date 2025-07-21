@@ -81,7 +81,7 @@ public class UserService {
         return new ResponseEntity<>(allMySubPosts,HttpStatus.OK);
     }
 
-    public void deletePostById(String userName, ObjectId id){
+    public void deletePostById(String userName, String id){
         User user = userRepository.findByUserName(userName);
         user.getMyPosts().removeIf(x -> x.getId().equals(id));
         userRepository.save(user);

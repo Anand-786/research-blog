@@ -25,7 +25,7 @@ public class CategoryService {
         categoryRepository.save(updatedCategory);
     }
 
-    public void deletePostById(String categoryName, ObjectId id){
+    public void deletePostById(String categoryName, String id){
         Category category = categoryRepository.findByCategory(categoryName);
         category.getPosts().removeIf(x -> x.getId().equals(id));
         categoryRepository.save(category);

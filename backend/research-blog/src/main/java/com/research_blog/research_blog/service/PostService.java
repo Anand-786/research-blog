@@ -34,13 +34,13 @@ public class PostService {
         userService.saveUser(user);
     }
 
-    public void editPost(ObjectId id,Post newPost){
+    public void editPost(String id,Post newPost){
         newPost.setId(id);
         postRepository.save(newPost);
     }
 
     @Transactional
-    public void deletePost(String userName,ObjectId id){
+    public void deletePost(String userName,String id){
         userService.deletePostById(userName,id);
         Post oldPost=postRepository.findById(id).orElse(null);
         categoryService.deletePostById(oldPost.getCategory(),id);
@@ -56,25 +56,25 @@ public class PostService {
         return new ResponseEntity<>(randomPosts, HttpStatus.OK);
     }
 
-    public void likePost(ObjectId id){
+    public void likePost(String id){
         Post post = postRepository.findById(id).orElse(null);
         post.setLikes(post.getLikes()+1);
         postRepository.save(post);
     }
 
-    public void unlikePost(ObjectId id){
+    public void unlikePost(String id){
         Post post = postRepository.findById(id).orElse(null);
         post.setLikes(post.getLikes()-1);
         postRepository.save(post);
     }
 
-    public void dislikePost(ObjectId id){
+    public void dislikePost(String id){
         Post post = postRepository.findById(id).orElse(null);
         post.setDislikes(post.getDislikes()+1);
         postRepository.save(post);
     }
 
-    public void unDislikePost(ObjectId id){
+    public void unDislikePost(String id){
         Post post = postRepository.findById(id).orElse(null);
         post.setDislikes(post.getDislikes()-1);
         postRepository.save(post);
