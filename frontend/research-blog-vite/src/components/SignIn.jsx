@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import {useOutletContext, useNavigate} from 'react-router-dom';
+import {useOutletContext, useNavigate, NavLink} from 'react-router-dom';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -99,9 +99,9 @@ export default function SignIn() {
 
       <p className="text-md text-center">
         Don't have an account?{' '}
-        <a href="/signup" className="text-blue-500 hover:underline">
+        <NavLink to="/signup" className="text-blue-500 hover:underline">
           Sign Up
-        </a>
+        </NavLink>
       </p>
     </form>
     </div>

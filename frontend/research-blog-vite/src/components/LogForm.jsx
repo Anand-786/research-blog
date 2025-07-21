@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 
 const categories = [
   'Computer Science - AI/ML',
@@ -28,6 +29,7 @@ export default function LogForm({ onSubmit }) {
   const [imageUrl, setImageUrl] = useState('');
   const [references, setReferences] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const isValid = title.trim() !== '' && category.trim() !== '' && status.trim() !== '';
 
@@ -49,7 +51,6 @@ export default function LogForm({ onSubmit }) {
       onSubmit(formData);
     }
 
-    // Optional: Reset the form after submit
     setTitle('');
     setCategory('');
     setTags('');
@@ -59,6 +60,12 @@ export default function LogForm({ onSubmit }) {
     setReferences('');
 
     setShowModal(true);
+  };
+
+  const handleModalClose = (e) => {
+    e.preventDefault();
+    setShowModal(false);
+    navigate('/');
   };
 
   return (
@@ -167,8 +174,8 @@ export default function LogForm({ onSubmit }) {
           <div className="bg-[#EDF2F4] px-8 py-4 rounded-sm text-center space-y-5">
             <p className="text-[#2b2d42] font-semibold text-md">Log Created.</p>
             <button
-              onClick={() => setShowModal(false)}
-              className="px-4 py-1 bg-[#D90429] text-white rounded-sm hover:bg-[#EF233C] text-md"
+              onClick={handleModalClose}
+              className="px-4 py-1 bg-[#D90429] text-white rounded-sm hover:bg-[#EF233C] text-md hover:cursor-pointer"
             >
               OK
             </button>
