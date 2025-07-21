@@ -28,4 +28,5 @@ public class Post {
     private boolean status;
     private int likes;
     private int dislikes;
+    private String imgUrl;
 }

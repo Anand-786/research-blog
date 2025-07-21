@@ -2,10 +2,10 @@ import { useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const categories = [
-  'Computer Science - AI/ML',
-  'Computer Science - Theoretical',
-  'Computer Science - Systems',
-  'Electronics/Embedded',
+  'ComputerScience-AI-ML',
+  'ComputerScience-Theoretical',
+  'ComputerScience-Systems',
+  'Electronics',
   'Mechanical',
   'Civil',
   'Physics',
@@ -20,7 +20,7 @@ const statuses = [
 ];
 
 
-export default function LogForm({ onSubmit }) {
+export default function LogForm() {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState('');
@@ -33,33 +33,37 @@ export default function LogForm({ onSubmit }) {
 
   const isValid = title.trim() !== '' && category.trim() !== '' && status.trim() !== '';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid) return;
 
     const formData = {
-      title,
-      category,
+      title: title,
+      category: category,
       tags: tags.split(',').map((tag) => tag.trim()).filter(Boolean),
-      status,
-      body,
-      imageUrl,
-      referenceLinks: references.split(',').map((link) => link.trim()).filter(Boolean),
+      status: (status === "Ongoing")?true:false,
+      mainbody: body,
+      imgUrl: imageUrl,
+      refs: references.split(',').map((link) => link.trim()).filter(Boolean),
     };
+    try{
+      const response = await fetch(localStorage.getItem('spring-url')+'/logs/create-log',{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (onSubmit) {
-      onSubmit(formData);
+      if(response.status === 201){
+        setShowModal(true);
+      }else{
+        console.log("Error creating log :",response.status);
+      }
+    }catch(error){
+      console.log(error);
     }
-
-    setTitle('');
-    setCategory('');
-    setTags('');
-    setStatus('');
-    setBody('');
-    setImageUrl('');
-    setReferences('');
-
-    setShowModal(true);
   };
 
   const handleModalClose = (e) => {
