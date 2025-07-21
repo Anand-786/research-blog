@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 
 export default function SignIn() {
   const [username, setUsername] = useState('');
@@ -8,15 +9,48 @@ export default function SignIn() {
 
   const isValid = username.trim() !== '' && password.trim() !== '';
 
-  const handleSignIn = (e) => {
+  const navigate = useNavigate();
+
+  useEffect(() =>{
+    if(isValidUser){
+      navigate('/');
+    }
+  },[isValidUser]);
+
+  const handleSignIn = async (e) => {
     e.preventDefault();
     if (!isValid) return;
-    // This is static for now, you can plug in auth logic later
-    if (!isValidUser) {
-      setShowError(true);
-    } else {
-      setShowError(false);
-      // Proceed with navigation or auth success action
+    // JWT token
+
+    try{
+      const response = await fetch(localStorage.getItem('spring-url')+'/public/login',
+        {
+          method: 'POST',
+          headers: 
+          {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(
+            {
+              userName: username,
+              password: password,
+            }
+          ),
+        }
+      );
+
+      if(response.status === 201){
+        const jwtToken = await response.text();
+        localStorage.setItem('jwt',jwtToken);
+        console.log("Login Successful, token stored :",localStorage.getItem('jwt'));
+        setIsValidUser(true);
+      }
+      else{
+        console.log("Login failed with status : ", response.status);
+        setShowError(true);
+      }
+    }catch(error){
+      console.log("Error caught :",error);
     }
   };
 
@@ -50,7 +84,7 @@ export default function SignIn() {
         type="submit"
         disabled={!isValid}
         className={`w-full py-2 rounded-sm text-white text-md ${
-          isValid ? 'bg-[#D90429] hover:bg-[#EF233C]' : 'bg-[#8D99AE] cursor-not-allowed'
+          isValid ? 'bg-[#D90429] hover:bg-[#EF233C] hover:cursor-pointer' : 'bg-[#8D99AE] cursor-not-allowed'
         }`}
       >
         Sign In

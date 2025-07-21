@@ -6,6 +6,8 @@ import CategoryManager from './components/CategoryManager'
 import { Outlet } from 'react-router-dom'
 
 function Layout() {
+    localStorage.setItem('jwt',"This is my initial jwt Token which is Invalid.");
+    localStorage.setItem('spring-url','http://localhost:8080');
   return (
     <>
         <div className='w-full bg-[#FAF9F6] flex flex-col space-y-4'>

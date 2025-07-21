@@ -34,7 +34,7 @@ const router = createBrowserRouter([{
       element: <RandomLogs />
     },
     {
-      path: "/random-logs",
+      path: "/signedin",
       element: <RandomLogs />
     },
     {

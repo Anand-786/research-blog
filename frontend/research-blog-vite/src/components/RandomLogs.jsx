@@ -1,36 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LogCards from './LogCards';
 
-const myLogsArray = [
-    {
-        title: "First Log",
-        author: "Anand",
-        date: "2025-07-16",
-        category: "AI/ML",
-        tags: ["Transformer", "Optimization"],
-        status: "Active",
-        body: "This is the first log...",
-        imageUrl: "https://example.com/image1.png",
-        referenceLinks: ["https://example.com"],
-        likes: 8,
-        dislikes: 3,
-    },
-    {
-        title: "Second Log",
-        author: "Anand",
-        date: "2025-07-20",
-        category: "Systems",
-        tags: ["Gem5", "Optimization"],
-        status: "Completed",
-        body: "This is the second log...",
-        imageUrl: "https://example.com/image1.png",
-        referenceLinks: ["https://example.com"],
-        likes: 6,
-        dislikes: 2,
-    }
-];
-
 export default function RandomLogs() {
+  const [myLogsArray, setMyLogsArray] = useState([]);
+useEffect(() => {
+  const handleRandomLogs = async () => {
+    try{
+      const response = await fetch(localStorage.getItem('spring-url')+'/public/random-logs',
+        {
+          method: 'GET',
+          headers: 
+          {
+            'Content-Type': 'application/json',
+          },
+        });
+
+      if(response.status === 200){
+        const data = await response.json();
+        setMyLogsArray(data);
+      }
+      else{
+        console.log("Unable to fetch random logs.")
+      }
+    }
+    catch(error){
+      console.log("Error ",error);
+    }
+  };
+  handleRandomLogs();
+},[]);
   return (
     <LogCards logs={myLogsArray}/>
   )

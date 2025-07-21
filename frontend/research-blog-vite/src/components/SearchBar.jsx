@@ -29,7 +29,7 @@ export default function SearchBar({ onSearch }) {
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        className="px-3 py-2 text-sm outline-none bg-[#2b2d42] text-white items-center"
+        className="px-3 py-2 text-sm outline-none bg-[#8D99AE] text-white items-center hover:cursor-pointer"
       >
         {categories.map((cat, idx) => (
           <option key={idx} value={cat}>

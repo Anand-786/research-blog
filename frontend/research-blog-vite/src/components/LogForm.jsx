@@ -133,7 +133,7 @@ export default function LogForm({ onSubmit }) {
 
       <div>
         <label className="block text-md font-semibold">Image URL  
-            <p className='text-gray-200'>(should be public)</p></label>
+            <p className='text-gray-400'>(should be public)</p></label>
         <input
           type="text"
           value={imageUrl}

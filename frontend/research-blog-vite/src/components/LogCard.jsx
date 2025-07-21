@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { ThumbsUp, ThumbsDown , Brain} from 'lucide-react';
 
 export default function LogCard({
+  id,
   title="How I Solved My Research Problem",
   author="Anand Singh",
   date="2025-07-16",
   category="AI Research",
   tags=['Machine Learning', 'Transformer', 'Optimization'],
-  status="Open for Feedback",
-  body="In this blog, I explain how I tackled model optimization for transformers...",
+  status=false,
+  mainbody="In this blog, I explain how I tackled model optimization for transformers...",
   imageUrl="https://via.placeholder.com/400x200",
-  referenceLinks=[
+  refs=[
     'https://openai.com',
     'https://arxiv.org/abs/1234.5678'
   ],
@@ -18,8 +19,35 @@ export default function LogCard({
   dislikes = 0,
 }) {
   const [showReferences, setShowReferences] = useState(false);
-  const [likeCount, setLikeCount] = useState(likes);
+  const [liked, setLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  const [likecount, setLikeCount] = useState(likes);
   const [dislikeCount, setDislikeCount] = useState(dislikes);
+
+  const handleLike = async () => {
+    if(liked === true)
+        return;
+    try{
+      const response = await fetch(localStorage.getItem('spring-url')+'/user/like-log/'+{id},
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if(response.status === 200){
+      console.log("Response is ok");
+      setLikeCount(likecount+1);
+      setLiked(true);
+    }
+    else{
+      console.log("Error in liking post");
+    }
+    }catch(error){
+      console.log("Error :",error);
+    }
+  };
 
   return (
     <div className="w-full bg-gray-50 rounded-xs shadow-sm p-6 space-y-3 text-[#2b2d42]">
@@ -48,11 +76,11 @@ export default function LogCard({
       </div>
 
       <p className="text-md">
-        <span className="font-semibold">Status: </span> {status}
+        <span className="font-semibold">Status: </span> {(status === true)?"Ongoing":"Completed"}
       </p>
 
       <div className="text-gray-800 text-sm space-y-2">
-        <p>{body}</p>
+        <p>{mainbody}</p>
         {imageUrl && (
           <img
             src="/graph.png"
@@ -76,7 +104,7 @@ export default function LogCard({
 
       {showReferences && (
         <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-          {referenceLinks.map((link, idx) => (
+          {refs.map((link, idx) => (
             <li key={idx}>
               <a
                 href={link}
@@ -93,14 +121,13 @@ export default function LogCard({
 
       <div className="flex items-center space-x-4 pt-2">
         <button
-          onClick={() => setLikeCount(likeCount + 1)}
+          onClick={handleLike}
           className="flex items-center text-[#588157] hover:underline text-md"
         >
           <ThumbsUp className="h-4 w-4 mr-1" />
-          {likeCount}
+          {likecount}
         </button>
         <button
-          onClick={() => setDislikeCount(dislikeCount + 1)}
           className="flex items-center text-[#c1121f] hover:underline text-md"
         >
           <ThumbsDown className="h-4 w-4 mr-1" />
