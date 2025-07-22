@@ -117,13 +117,13 @@ export default function LogCard({
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: mainbody,
+        text: `Summarize the following. Title : ${title}. ${mainbody}`,
       }),
     });
 
     if(response.status === 200){
       const data = await response.json();
-      setAisummary(data[0]?.summary_text || 'No summary available');
+      setAisummary(data.summary);
       setShowSummary(true);
       setLoadingSummary(false);
     }
@@ -176,7 +176,7 @@ export default function LogCard({
 
       <div className="flex justify-between items-center pt-2">
         <button onClick={handleAISummary} 
-        className="px-3 py-1 bg-[#2B2D42] text-[#fff9ec] text-md rounded-full hover:bg-[#ef233c] flex items-center hover:cursor-pointer">
+        className="px-3 py-1 bg-[#2B2D42] text-[#fff9ec] text-md rounded-full hover:bg-[#ef233c] flex items-center hover:cursor-pointer shadow-sm shadow-[#D90429]">
           Summarize with AI <Brain className="h-4 w-4 mr-0 ml-1.5 mt-0.5" />
         </button>
         <button
@@ -190,9 +190,9 @@ export default function LogCard({
       {loadingSummary && <p className="text-[#8d99ae] mt-2">Fetching summary...</p>}
 
       {showSummary && (
-        <div className="mt-2 p-3 bg-gray-100 rounded-sm shadow-sm text-[#2B2D42]">
-          <p className="font-semibold mb-1">AI Summary (Powered by Facebook's Model):</p>
-          <p>{aisummary}</p>
+        <div className="mt-2 p-4 bg-[#f5f3f4] rounded-lg shadow-sm shadow-[#D90429] text-[#2B2D42] italic">
+          <p className="font-semibold mb-2 text-md">Facebook/bart-large-cnn :</p>
+          <p className='text-md'>{aisummary}</p>
         </div>
       )}
 

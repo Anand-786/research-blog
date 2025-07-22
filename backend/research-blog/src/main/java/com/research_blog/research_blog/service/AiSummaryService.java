@@ -29,7 +29,10 @@ public class AiSummaryService {
         headers.setBearerAuth(API_KEY);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(body,headers);
-        ResponseEntity<String> response = restTemplate.exchange(API, HttpMethod.POST,entity,String.class);
-        return response;
+        String response = restTemplate.exchange(API, HttpMethod.POST,entity,String.class).getBody();
+        response = response.substring(18,response.length()-3);
+        Map<String, String> result = new HashMap<>();
+        result.put("summary",response);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
