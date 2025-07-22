@@ -72,6 +72,22 @@ export default function LogForm() {
     navigate('/');
   };
 
+  const openCloudinaryWidget = () => {
+    window.cloudinary.openUploadWidget({
+      cloudName: 'dujrdya30',
+      uploadPreset: 'research-blog-images',
+      sources: ['local','url','camera'],
+      multiple: false,
+    },
+    (error, result) => {
+      if(!error && result && result.event === "success"){
+        console.log('Uploaded :',result.info.secure_url);
+        setImageUrl(result.info.secure_url);
+      }
+    }
+  );
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full p-5 rounded-sm shadow-sm">
         <div className='flex items-center justify-center text-2xl font-semibold'>
@@ -143,17 +159,6 @@ export default function LogForm() {
       </div>
 
       <div>
-        <label className="block text-md font-semibold">Image URL  
-            <p className='text-gray-400'>(should be public)</p></label>
-        <input
-          type="text"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          className="w-full border rounded-sm px-2 py-2 text-md"
-        />
-      </div>
-
-      <div>
         <label className="block text-md font-semibold">Reference Links (comma-separated)</label>
         <input
           type="text"
@@ -163,11 +168,15 @@ export default function LogForm() {
         />
       </div>
 
+      <div>
+        <button type="button" className='bg-[#003049] text-[#f5f3f4] px-4 py-2 rounded-xs font-semibold hover:bg-[#669bbc] hover:cursor-pointer' onClick={openCloudinaryWidget}>Upload Image</button>
+      </div>
+
       <button
         type="submit"
         disabled={!isValid}
         className={`w-full py-2 rounded-sm text-white text-md ${
-          isValid ? 'bg-[#D90429] hover:bg-[#EF233C]' : 'bg-[#8D99AE] cursor-not-allowed'
+          isValid ? 'bg-[#D90429] hover:bg-[#EF233C] hover:cursor-pointer' : 'bg-[#8D99AE] cursor-not-allowed'
         }`}
       >
         Submit

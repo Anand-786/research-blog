@@ -11,7 +11,7 @@ export default function LogCard({
   tags=['Machine Learning', 'Transformer', 'Optimization'],
   status=false,
   mainbody="In this blog, I explain how I tackled model optimization for transformers...",
-  imageUrl="https://via.placeholder.com/400x200",
+  imgUrl,
   refs=[
     'https://openai.com',
     'https://arxiv.org/abs/1234.5678'
@@ -165,9 +165,9 @@ export default function LogCard({
 
       <div className="text-gray-800 text-sm space-y-2">
         <p>- {mainbody}</p>
-        {imageUrl && (
+        {imgUrl && (
           <img
-            src={imageUrl}
+            src={imgUrl}
             alt="Blog Visual"
             className="w-full h-auto rounded-sm"
           />
