@@ -9,6 +9,7 @@ import SignUp from './components/Signup.jsx'
 import RandomLogs from './components/RandomLogs.jsx'
 import LogForm from './components/LogForm.jsx'
 import SearchLogs from './components/SearchLogs.jsx'
+import SubscribedLogs from './components/SubscribedLogs.jsx'
 
 const router = createBrowserRouter([{
   path: '/',
@@ -36,7 +37,7 @@ const router = createBrowserRouter([{
     },
     {
       path: "/signedin",
-      element: <RandomLogs />
+      element: <SubscribedLogs />
     },
     {
       path: "/my-logs",

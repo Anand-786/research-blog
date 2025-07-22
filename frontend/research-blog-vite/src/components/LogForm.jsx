@@ -69,7 +69,7 @@ export default function LogForm() {
   const handleModalClose = (e) => {
     e.preventDefault();
     setShowModal(false);
-    navigate('/');
+    navigate('/signedin');
   };
 
   const openCloudinaryWidget = () => {

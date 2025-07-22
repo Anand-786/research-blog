@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'
 function Layout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [name, setName] = useState("");
+    const [subscat,setSubscat] = useState([]);
     localStorage.setItem('spring-url','http://localhost:8080');
 
     useEffect(() => {
@@ -28,11 +29,11 @@ function Layout() {
                 
             <div className="flex w-full pt-4 px-52">
                 <div className="w-3/4 pr-20 border-r border-gray-200">
-                    <Outlet context={{isLoggedIn, setIsLoggedIn, setName}} />
+                    <Outlet context={{isLoggedIn, setIsLoggedIn, setName, subscat, setSubscat}} />
                 </div>
                 <div className="w-1/4 pl-20">
                 <p className="text-gray-500">
-                    <CategoryManager isLoggedIn={isLoggedIn} />
+                    <CategoryManager isLoggedIn={isLoggedIn} subscat={subscat} setSubscat={setSubscat} />
                 </p>
                 </div>
             </div>

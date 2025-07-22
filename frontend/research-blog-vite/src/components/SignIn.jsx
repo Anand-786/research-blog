@@ -4,19 +4,12 @@ import {useOutletContext, useNavigate, NavLink} from 'react-router-dom';
 export default function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isValidUser, setIsValidUser] = useState(false); // Static false for now
   const [showError, setShowError] = useState(false);
   const {setIsLoggedIn, setName} = useOutletContext();
 
   const isValid = username.trim() !== '' && password.trim() !== '';
 
   const navigate = useNavigate();
-
-  useEffect(() =>{
-    if(isValidUser){
-      navigate('/');
-    }
-  },[isValidUser]);
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -44,9 +37,9 @@ export default function SignIn() {
         const jwtToken = await response.text();
         localStorage.setItem('jwt',jwtToken);
         setIsLoggedIn(true);
-        setIsValidUser(true);
         setName(username);
         localStorage.setItem('name',username);
+        navigate('/signedin');
       }
       else{
         console.log("Login failed with status : ", response.status);

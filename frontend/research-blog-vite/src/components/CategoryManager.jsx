@@ -14,7 +14,7 @@ const allCategories = [
   'Humanities',
 ];
 
-export default function CategoryManager({isLoggedIn}) {
+export default function CategoryManager({isLoggedIn, subscat, setSubscat}) {
   const [subscribed, setSubscribed] = useState([]);
   const [unsubscribed, setUnsubscribed] = useState(allCategories);
   const navigate = useNavigate();
@@ -34,6 +34,7 @@ export default function CategoryManager({isLoggedIn}) {
         setSubscribed(data.body);
         const notsubs = allCategories.filter((cat) => !data.body.includes(cat));
         setUnsubscribed(notsubs);
+        setSubscat(subscribed);
       }
       else{
         console.log("Error in loading subs :", resp.status);
@@ -56,6 +57,7 @@ export default function CategoryManager({isLoggedIn}) {
     if(response.status === 201){
       setSubscribed([...subscribed, category]);
       setUnsubscribed(unsubscribed.filter((c) => c !== category));
+      setSubscat([...subscat,category]);
     }
     else{
       console.log("Error in subscribing.",response.status);
@@ -75,6 +77,7 @@ export default function CategoryManager({isLoggedIn}) {
     if(response.status === 200){
       setUnsubscribed([...unsubscribed, category]);
       setSubscribed(subscribed.filter((c) => c !== category));
+      setSubscat(subscat.filter((c) => c !==category));
     }
     else{
       console.log("Error in unsubscribing.",response.status);

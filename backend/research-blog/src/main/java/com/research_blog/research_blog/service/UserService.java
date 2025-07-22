@@ -75,8 +75,11 @@ public class UserService {
         //change for user
         List<Post> allMySubPosts = new ArrayList<>();
         User user = userRepository.findByUserName(userName);
-        for(Category category : user.getSubscribedCategories()){
-            allMySubPosts.addAll(category.getPosts());
+        for(Category category : categoryService.getAllCategories()){
+            if(user.getSubscribedCategories().contains(category))
+                allMySubPosts.addAll(category.getPosts());
+            else if(!category.getPosts().isEmpty())
+                allMySubPosts.add(category.getPosts().getFirst());
         }
         return new ResponseEntity<>(allMySubPosts,HttpStatus.OK);
     }
