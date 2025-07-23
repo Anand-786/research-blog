@@ -49,4 +49,8 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("get-log/{id}")
+    public ResponseEntity<?> fetchPost(@PathVariable String id){
+        return postService.fetchPost(id);
+    }
 }

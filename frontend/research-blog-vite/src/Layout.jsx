@@ -4,7 +4,6 @@ import SearchBar from './components/SearchBar'
 import LogCard from './components/LogCard'
 import CategoryManager from './components/CategoryManager'
 import { Outlet } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 
 function Layout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);

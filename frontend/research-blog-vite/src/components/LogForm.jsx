@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {useNavigate, useSearchParams} from 'react-router-dom';
+import { ImagePlusIcon } from 'lucide-react';
 
 const categories = [
   'ComputerScience-AI-ML',
@@ -26,10 +27,44 @@ export default function LogForm() {
   const [tags, setTags] = useState('');
   const [status, setStatus] = useState('');
   const [body, setBody] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('Ongoing');
   const [references, setReferences] = useState('');
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const id= searchParams.get('id');
+  
+  useEffect(() => {
+    if(id && id!=="null"){
+      const fetchLog = async () =>{
+        const response = await fetch(localStorage.getItem('spring-url')+`/logs/get-log/${id}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+          },
+        });
+
+        if(response.status === 200){
+          const data = await response.json();
+          console.log(data);
+          setTitle(data.title);
+          setCategory(data.category);
+          const getTags = data.tags;
+          const tagsString = getTags.join(", ");
+          setTags(tagsString);
+          setStatus((data.status=== true)?'Ongoing':'Completed');
+          setBody(data.mainbody);
+          setImageUrl(data.imgUrl);
+          const refsArray = data.refs;
+          const refsString = refsArray.join(", ");
+          setReferences(refsString);
+        }
+      };
+      fetchLog();
+    }
+  },[]);
 
   const isValid = title.trim() !== '' && category.trim() !== '' && status.trim() !== '';
 
@@ -47,19 +82,38 @@ export default function LogForm() {
       refs: references.split(',').map((link) => link.trim()).filter(Boolean),
     };
     try{
-      const response = await fetch(localStorage.getItem('spring-url')+'/logs/create-log',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      if(id && id!=="null"){
+        const response = await fetch(localStorage.getItem('spring-url')+`/logs/edit-log/${id}`,{
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+          },
+          body: JSON.stringify(formData),
+        });
 
-      if(response.status === 201){
-        setShowModal(true);
-      }else{
-        console.log("Error creating log :",response.status);
+        if(response.status === 200){
+          setShowModal(true);
+        }
+        else{
+          console.log("Error in editing log :",response.status);
+        }
+      }
+      else{
+        const response = await fetch(localStorage.getItem('spring-url')+'/logs/create-log',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if(response.status === 201){
+          setShowModal(true);
+        }else{
+          console.log("Error creating log :",response.status);
+        }
       }
     }catch(error){
       console.log(error);
@@ -139,7 +193,7 @@ export default function LogForm() {
           className="w-full border rounded-sm px-2 py-2 text-md"
           required
         >
-          <option value="">Select status</option>
+          <option value="">Select Status</option>
           {statuses.map((cat, idx) => (
             <option key={idx} value={cat}>
               {cat}
@@ -169,7 +223,8 @@ export default function LogForm() {
       </div>
 
       <div>
-        <button type="button" className='bg-[#003049] text-[#f5f3f4] px-4 py-2 rounded-xs font-semibold hover:bg-[#669bbc] hover:cursor-pointer' onClick={openCloudinaryWidget}>Upload Image</button>
+        <button type="button" className='bg-[#003049] text-[#f5f3f4] px-4 py-2 rounded-xs font-semibold hover:bg-[#669bbc] hover:cursor-pointer flex' 
+        onClick={openCloudinaryWidget}><ImagePlusIcon className='h-5 w-5 mr-1'/>Upload Image</button>
       </div>
 
       <button

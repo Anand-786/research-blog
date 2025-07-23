@@ -36,6 +36,7 @@ public class PostService {
 
     public void editPost(String id,Post newPost){
         newPost.setId(id);
+        newPost.setDate(LocalDateTime.now());
         postRepository.save(newPost);
     }
 
@@ -78,5 +79,9 @@ public class PostService {
         Post post = postRepository.findById(id).orElse(null);
         post.setDislikes(post.getDislikes()-1);
         postRepository.save(post);
+    }
+
+    public ResponseEntity<?> fetchPost(String id){
+        return new ResponseEntity<>(postRepository.findById(id),HttpStatus.OK);
     }
 }

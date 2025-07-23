@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { ThumbsUp, ThumbsDown , Brain} from 'lucide-react';
-import {useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { ThumbsUp, ThumbsDown , Brain, Trash2, Edit} from 'lucide-react';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 
 export default function LogCard({
   id,
@@ -18,7 +18,7 @@ export default function LogCard({
   ],
   likes = 0,
   dislikes = 0,
-}) {
+  editPermission = false,}) {
   const [showReferences, setShowReferences] = useState(false);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -132,6 +132,33 @@ export default function LogCard({
     }
   };
 
+  const handleEdit = async () => {
+    navigate(`/add-log?id=${id}`);
+  };
+
+  const handleDelete = async () => {
+    try{
+      const response = await fetch(localStorage.getItem('spring-url')+`/logs/del-log/${id}`,{
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      });
+
+      if(response.status === 200){
+        console.log('Log deleted');
+        window.location.href='/my-logs';
+      }
+      else{
+        console.log('Error in deleting',response.status);
+      }
+    }
+    catch(error){
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-full bg-gray-50 rounded-xs shadow-sm p-6 space-y-3 text-[#2b2d42]">
       <div className="flex justify-between items-start">
@@ -213,21 +240,34 @@ export default function LogCard({
         </ul>
       )}
 
-      <div className="flex items-center space-x-4 pt-2">
-        <button
-          onClick={handleLike}
-          className="flex items-center text-[#588157] hover:text-green-500 text-lg hover:cursor-pointer"
-        >
-          <ThumbsUp className="h-5 w-5 mr-1" />
-          {likecount}
-        </button>
-        <button
-          onClick={handleDisLike} 
-          className="flex items-center text-[#c1121f] hover:text-red-500 text-lg hover:cursor-pointer"
-        >
-          <ThumbsDown className="h-5 w-5 mr-1" />
-          {dislikeCount}
-        </button>
+      <div className='flex items-center justify-between pt-2'>
+        <div className="flex items-center space-x-4 pt-2">
+          <button
+            onClick={handleLike}
+            className="flex items-center text-[#588157] hover:text-green-500 text-lg hover:cursor-pointer"
+          >
+            <ThumbsUp className="h-5 w-5 mr-1" />
+            {likecount}
+          </button>
+          <button
+            onClick={handleDisLike} 
+            className="flex items-center text-[#c1121f] hover:text-red-500 text-lg hover:cursor-pointer"
+          >
+            <ThumbsDown className="h-5 w-5 mr-1" />
+            {dislikeCount}
+          </button>
+        </div>
+
+        {editPermission && (
+            <div className="flex items-center space-x-3">
+              <button onClick={handleEdit} className="bg-[#669bbc] hover:bg-[#003049] text-md font-normal py-2 px-2 text-[#EDF2F4] hover:cursor-pointer rounded-lg flex items-center shadow-sm">
+                Edit<Edit className='h-5 w-5 ml-1'/>
+              </button>
+              <button onClick={handleDelete} className="bg-[#EF233C] hover:bg-[#D90429] text-md font-normal py-2 px-2 text-[#EDF2F4] hover:cursor-pointer rounded-lg flex items-center shadow-sm">
+                Delete<Trash2 className='h-5 w-5 ml-1'/>
+              </button>
+            </div>
+        )}
       </div>
     </div>
   );

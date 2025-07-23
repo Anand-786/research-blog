@@ -10,6 +10,7 @@ import RandomLogs from './components/RandomLogs.jsx'
 import LogForm from './components/LogForm.jsx'
 import SearchLogs from './components/SearchLogs.jsx'
 import SubscribedLogs from './components/SubscribedLogs.jsx'
+import MyLogs from './components/MyLogs.jsx'
 
 const router = createBrowserRouter([{
   path: '/',
@@ -41,7 +42,7 @@ const router = createBrowserRouter([{
     },
     {
       path: "/my-logs",
-      element: <RandomLogs />
+      element: <MyLogs />
     }
   ]
 }]);
