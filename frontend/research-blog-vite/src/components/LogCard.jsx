@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ThumbsUp, ThumbsDown , Brain, Trash2, Edit} from 'lucide-react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
+import AudioPlayer from './AudioPlayer';
 
 export default function LogCard({
   id,
@@ -168,6 +169,7 @@ export default function LogCard({
             {author} • {new Date(date).toLocaleDateString()}
           </p>
         </div>
+        <AudioPlayer logid={id}/>
       </div>
 
       <p className="text-md">
