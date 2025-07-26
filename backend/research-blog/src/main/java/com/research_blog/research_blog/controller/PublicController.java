@@ -59,4 +59,9 @@ public class PublicController {
     public ResponseEntity<?> searchByTags(@RequestBody Map<String, String> body, @PathVariable String categoryName){
         return new ResponseEntity<>(categoryService.searchByTags(body.get("text"),categoryName),HttpStatus.OK);
     }
+
+    @GetMapping("/fetch-log/{id}")
+    public ResponseEntity<?> fetchPost(@PathVariable String id){
+        return postService.fetchPost(id);
+    }
 }
