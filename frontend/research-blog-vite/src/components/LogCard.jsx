@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ThumbsUp, ThumbsDown , Brain, Trash2, Edit} from 'lucide-react';
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import WebSpeech from './WebSpeech';
+import QnASection from './QnASection';
 
 export default function LogCard({
   id,
@@ -241,6 +242,10 @@ export default function LogCard({
           ))}
         </ul>
       )}
+
+      <div>
+        <QnASection logid={id}/>
+      </div>
 
       <div className='flex items-center justify-between pt-2'>
         <div className="flex items-center space-x-4 pt-2">
