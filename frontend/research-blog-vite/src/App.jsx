@@ -4,9 +4,6 @@ import Navbar from './components/Navbar'
 import LogCard from './components/LogCard'
 import SearchBar from './components/SearchBar'
 import CategoryManager from './components/CategoryManager'
-import LogForm from './components/LogForm'
-import SignIn from './components/SignIn'
-import SignUp from './components/Signup'
 
 function App() {
   const [count, setCount] = useState(0)

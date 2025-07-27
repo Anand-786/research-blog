@@ -9,7 +9,9 @@ function Layout() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [name, setName] = useState("");
     const [subscat,setSubscat] = useState([]);
-    localStorage.setItem('spring-url','http://localhost:8080');
+    if(import.meta.env.PROD && !localStorage.getItem('spring-url')){
+        localStorage.setItem('spring-url',import.meta.env.VITE_SPRING_URL);
+    }
 
     useEffect(() => {
     const token = localStorage.getItem('jwt');
