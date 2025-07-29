@@ -1,9 +1,0 @@
-[phases.setup]
-nixPkgs = ["maven", "openjdk21"]
-
-[phases.build]
-cmds = ["mvn clean package -DskipTests"]
-
-[start]
-cmd = "java -jar target/research-blog-0.0.1-SNAPSHOT.jar"
-
