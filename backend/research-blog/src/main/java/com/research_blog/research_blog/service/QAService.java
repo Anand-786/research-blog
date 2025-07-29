@@ -15,9 +15,9 @@ import java.util.*;
 
 @Service
 public class QAService {
-    @Value("${gemini.apikey}")
+    @Value("${GEMINI_API_KEY}")
     private String token;
-    @Value("${gemini.url}")
+    @Value("${GEMINI_API_URL}")
     private String url;
     @Autowired
     private PostRepository postRepository;

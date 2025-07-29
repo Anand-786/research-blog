@@ -13,9 +13,9 @@ import java.util.Map;
 
 @Service
 public class AiSummaryService {
-    @Value("${api.key}")
+    @Value("${HF_API_KEY}")
     private String API_KEY;
-    @Value("${api}")
+    @Value("${HF_API_URL}")
     private String API;
 
     @Autowired
