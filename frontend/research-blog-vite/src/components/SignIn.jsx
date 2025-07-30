@@ -39,6 +39,13 @@ export default function SignIn() {
         setIsLoggedIn(true);
         setName(username);
         localStorage.setItem('name',username);
+
+        // **ADDED: Clear form fields to prevent Google password manager popup**
+        setTimeout(() => {
+          setUsername('');
+          setPassword('');
+        }, 50);
+
         navigate('/signedin');
       }
       else{
