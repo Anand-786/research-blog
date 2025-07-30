@@ -65,18 +65,22 @@ export default function SignIn() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="w-full border rounded-sm px-3 py-2 text-md"
-          required autoComplete='off'
+          required 
         />
       </div>
 
       <div>
         <label className="block text-md font-semibold">Password *</label>
         <input
-          type="password"
+          type="text"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          style={{
+            WebkitTextSecurity: 'disc',
+            textSecurity: 'disc'
+          }}
           className="w-full border rounded-sm px-3 py-2 text-md"
-          required autoComplete='new-password'
+          required 
         />
       </div>
 

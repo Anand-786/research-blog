@@ -34,6 +34,9 @@ export default function SignUp() {
         });
 
         if(response.status === 201){
+          setUsername('');
+          setPassword('');
+
           navigate('/signin');
         }
         else{
@@ -63,9 +66,13 @@ export default function SignUp() {
       <div>
         <label className="block text-md font-semibold">Password *</label>
         <input
-          type="password"
+          type="text"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          style={{
+            WebkitTextSecurity: 'disc',
+            textSecurity: 'disc'
+          }}
           className="w-full border rounded-sm px-3 py-2 text-md"
           required
         />
@@ -74,9 +81,13 @@ export default function SignUp() {
       <div>
         <label className="block text-md font-semibold">Confirm Password *</label>
         <input
-          type="password"
+          type="text"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
+          style={{
+            WebkitTextSecurity: 'disc',
+            textSecurity: 'disc'
+          }}
           className="w-full border rounded-sm px-3 py-2 text-md"
           required
         />
