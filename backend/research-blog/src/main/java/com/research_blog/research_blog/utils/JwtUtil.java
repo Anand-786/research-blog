@@ -27,7 +27,7 @@ public class JwtUtil {
                 add("typ","JWT").
                 and().
                 issuedAt(new Date(System.currentTimeMillis())).
-                expiration(new Date(System.currentTimeMillis()+ 1000*60*10)).
+                expiration(new Date(System.currentTimeMillis()+ 1000*60*120)).
                 signWith(getSigningKey()).
                 compact();
     }
