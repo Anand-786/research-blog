@@ -40,11 +40,8 @@ export default function SignIn() {
         setName(username);
         localStorage.setItem('name',username);
 
-        // **ADDED: Clear form fields to prevent Google password manager popup**
-        setTimeout(() => {
-          setUsername('');
-          setPassword('');
-        }, 50);
+        setUsername('');
+        setPassword('');
 
         navigate('/signedin');
       }
@@ -68,7 +65,7 @@ export default function SignIn() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className="w-full border rounded-sm px-3 py-2 text-md"
-          required
+          required autoComplete='off'
         />
       </div>
 
@@ -79,7 +76,7 @@ export default function SignIn() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full border rounded-sm px-3 py-2 text-md"
-          required
+          required autoComplete='new-password'
         />
       </div>
 
